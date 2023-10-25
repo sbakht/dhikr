@@ -1,23 +1,32 @@
 <template>
   <div v-if="user">
     <div>Hello {{ user.user_metadata.name }}</div>
+
     <div v-if="isLoading">loading</div>
-    <div v-else-if="total >= 0">
-    {{ total }}
+    <div v-else>
+    <button @click="increment">
+    {{ count }}
+    </button>
+    </div>
+
+    <div v-if="isLoading2">loading</div>
+    <div v-else>
+    <button @click="increment2">
+    {{ count2 }}
+    </button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed} from 'vue';
+import { ref, computed } from 'vue'
+import { watchOnce } from '@vueuse/core'
+
 import useAuthUser from '../composables/useAuthUser'
-import { getCount } from '../composables/useUserCount'
+import { useCount } from '../composables/useUserCount'
 const { user } = useAuthUser()
 
-const {state, isLoading} = getCount()
+const { count, increment, isLoading } = useCount({ tableId: 1 })
+const { count: count2, increment: increment2, isLoading: isLoading2 } = useCount({ tableId: 2 })
 
-const total = computed(() => {
-  const data = state.value?.data || []
-  return data.reduce((accum, item) => accum + item.count, 0)
-})
 </script>
