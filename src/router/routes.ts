@@ -10,7 +10,7 @@ const routes: RouteRecordRaw[] = [
     name: 'profile',
     path: '/profile',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/UserPage.vue') }]
+    children: [{ path: '', component: () => import('pages/IndexPage.vue') }]
   },
 
   // Always leave this as last one,
