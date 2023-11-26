@@ -1,3 +1,4 @@
+import { date } from 'quasar'
 import { watchOnce, useAsyncState } from '@vueuse/core'
 import useAuthUser from './useAuthUser'
 import useSupabase from './useSupabase'
@@ -10,16 +11,19 @@ const COUNT_ID = {
 
 const tableName = id => COUNT_ID[id]
 
-export function getCount(id) {
+export function getCount({ tableId, startDate = '2023-01-01', endDate }) {
   const { user } = useAuthUser()
   const { supabase } = useSupabase()
 
+  const end = endDate || date.formatDate(Date.now(), 'YYYY-MM-DD')
+  console.log(end)
   const { state, isReady, isLoading } = useAsyncState(
     supabase
-      .from(tableName(id))
+      .from(tableName(tableId))
       .select('count')
       .eq('userid', user.value.id)
-      .gte('created_at', '2023-10-24')
+      .gte('created_at', end)
+    // .lte('created_at', startDate)
   )
 
   return {
@@ -50,7 +54,7 @@ export function addCount(id, count) {
 }
 
 export function useCount({ tableId }) {
-  const { state, isLoading } = getCount(tableId)
+  const { state, isLoading } = getCount({ tableId })
 
   const count = ref(0)
 
