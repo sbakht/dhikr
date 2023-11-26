@@ -6,7 +6,7 @@
       HalalCompetitions
     </q-toolbar-title>
 
-    <q-tabs no-caps>
+    <q-tabs class="gt-xs" no-caps>
       <q-route-tab name="tab1" label="Home" to="/" />
       <q-route-tab name="tab2" label="About" to="about" />
       <q-route-tab name="tab3" label="Results" to="result" />
@@ -14,9 +14,9 @@
 
     <q-space />
 
-    <q-tabs shrink no-caps>
+    <q-tabs class="gt-xs" shrink no-caps>
       <q-route-tab v-if="!user" name="tab4" label="Login" to="/login" />
-      <q-route-tab v-if="!user" name="tab5" label="Register" to="register" />
+      <q-route-tab class="gt-sm" v-if="!user" name="tab5" label="Register" to="register" />
       <q-route-tab v-else name="tab5" label="Log out" to="logout" />
     </q-tabs>
   </q-toolbar>
