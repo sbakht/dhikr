@@ -54,21 +54,4 @@ const showDrawer = computed({
 
 const { links, userLinks } = useNavLinks()
 
-const menuList = [{
-  icon: 'home',
-  label: 'Home',
-  separator: true,
-  link: '/'
-}]
-
 </script>
-
-<style lang="scss" scoped>
-// a {
-//   text-decoration: none;
-
-//   &:visited {
-//     color: black;
-//   }
-// }
-</style>
