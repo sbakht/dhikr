@@ -1,8 +1,10 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="hHh Lpr lFf">
     <q-header elevated>
-      <NavBar />
+      <NavBar @toggleDrawer="toggleDrawer" />
     </q-header>
+
+    <HamburgerMenu v-model="showDrawer" />
 
     <q-page-container>
       <router-view />
@@ -13,5 +15,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import NavBar from './NavBar.vue'
+import HamburgerMenu from './HamburgerMenu.vue'
 
+const showDrawer = ref(false)
+
+function toggleDrawer() {
+  showDrawer.value = !showDrawer.value
+}
 </script>
