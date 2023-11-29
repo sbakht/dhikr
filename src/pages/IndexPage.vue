@@ -5,8 +5,9 @@
 
       <q-linear-progress stripe size="10px" :value="progress" />
 
-      <Spinner v-model="value" :max="100" label="SubhanAllah" />
-      <Spinner v-model="obj.curr.value" :max="obj.max" label="Allahu Akbar" />
+      <template v-for="obj in trackers" :key="obj.id">
+        <Spinner v-model="obj.value.value" :max="obj.max.value" :label="obj.label" />
+      </template>
 
     </div>
     <div v-else>
@@ -21,17 +22,25 @@ import useAuthUser from '../composables/useAuthUser'
 import Spinner from 'src/components/Spinner.vue'
 const { user } = useAuthUser()
 
-const value = ref(30)
-const value2 = ref(70)
-const obj = {
-  curr: ref(70),
-  max: 100
-}
+const trackers = [
+  {
+    id: 1,
+    label: 'SubhanAllah',
+    value: ref(30),
+    max: ref(100)
+  },
+  {
+    id: 2,
+    label: 'Allahu Akbar',
+    value: ref(70),
+    max: ref(100)
+  }
+]
 
 const progress = computed(() => {
-  const curr = obj.curr.value + value.value
-  const max = obj.max + 100
+  const curr = trackers.map(({ value }) => value.value).reduce((a, b) => a + b, 0)
 
+  const max = trackers.map(({ max }) => max.value).reduce((a, b) => a + b, 0)
   return curr / max
 })
 
