@@ -2,9 +2,9 @@
   <q-card class="flex justify-center" style="max-width: 150px;" flat>
     <q-card-section class="q-pa-none">
       <div class="text-center">{{ label }}</div>
-      <q-btn class="q-mt-md" @click="count = count + step" flat :ripple="false" :disable="count >= max">
-        <q-circular-progress :value="count" :max="max" size="5rem" color="blue-8" track-color="blue-2"
-          show-value></q-circular-progress>
+      <q-btn class="q-mt-md" @click="count = count + step" flat :ripple="false" :disable="disabled">
+        <q-circular-progress :value="count" :max="max" size="5rem" color="blue-8" track-color="blue-2" show-value>{{
+          count }}</q-circular-progress>
       </q-btn>
     </q-card-section>
   </q-card>
@@ -31,6 +31,10 @@ const props = defineProps({
   max: {
     type: Number,
     default: 100
+  },
+  disableOnComplete: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -44,6 +48,10 @@ const count = computed({
     console.log(value)
     emit('update:modelValue', value)
   }
+})
+
+const disabled = computed(() => {
+  return props.modelValue >= props.max && props.disableOnComplete
 })
 
 const value = ref(30)

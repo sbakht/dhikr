@@ -38,7 +38,7 @@ const trackers = [
 ]
 
 const progress = computed(() => {
-  const curr = trackers.map(({ value }) => value.value).reduce((a, b) => a + b, 0)
+  const curr = trackers.map(({ value, max }) => Math.min(value.value, max.value)).reduce((a, b) => a + b, 0)
 
   const max = trackers.map(({ max }) => max.value).reduce((a, b) => a + b, 0)
   return curr / max
