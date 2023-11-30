@@ -1,10 +1,11 @@
 <template>
-  <q-card class="flex justify-center" style="max-width: 150px;" flat>
-    <q-card-section class="q-pa-none">
+  <q-card flat>
+    <q-card-section class="column q-pa-none">
       <div class="text-center">{{ label }}</div>
       <q-btn class="q-mt-md" @click="count = count + step" flat :ripple="false" :disable="disabled">
-        <q-circular-progress :value="count" :max="max" size="5rem" color="blue-8" track-color="blue-2" show-value>{{
-          count }}</q-circular-progress>
+        <q-circular-progress class="self-center" :value="count" :max="max" size="5rem" color="blue-8" track-color="blue-2"
+          show-value>{{
+            count }}</q-circular-progress>
       </q-btn>
     </q-card-section>
   </q-card>
