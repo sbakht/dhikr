@@ -1,11 +1,10 @@
 <template>
-  <q-card flat>
+  <q-card v-bind="cardProps" flat>
     <q-card-section class="column q-pa-none">
       <div class="text-center">{{ label }}</div>
       <q-btn class="q-mt-md" @click="count = count + step" flat :ripple="false" :disable="disabled">
-        <q-circular-progress class="self-center" :value="count" :max="max" size="5rem" color="blue-8" track-color="blue-2"
-          show-value>{{
-            count }}</q-circular-progress>
+        <q-circular-progress class="self-center" :value="count" :max="max" size="5rem" v-bind="spinnerProps"
+          color="blue-8" track-color="blue-2" show-value>{{ count }}</q-circular-progress>
       </q-btn>
     </q-card-section>
   </q-card>
@@ -16,6 +15,10 @@ import { computed, ref } from 'vue'
 import useAuthUser from '../composables/useAuthUser'
 const { user } = useAuthUser()
 
+defineOptions({
+  inheritAttrs: false
+})
+
 const props = defineProps({
   modelValue: {
     type: Number,
@@ -23,7 +26,19 @@ const props = defineProps({
   },
   label: {
     type: String,
-    required: true
+    default: ''
+  },
+  size: {
+    type: String,
+    default: '5rem'
+  },
+  cardProps: {
+    type: Object,
+    default: () => ({})
+  },
+  spinnerProps: {
+    type: Object,
+    default: () => ({})
   },
   step: {
     type: Number,

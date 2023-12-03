@@ -9,12 +9,17 @@
     <q-page-container>
       <router-view />
     </q-page-container>
+
+    <q-footer elevated>
+      <MobileFooter />
+    </q-footer>
   </q-layout>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import NavBar from './NavBar.vue'
+import MobileFooter from './MobileFooter.vue'
 import HamburgerMenu from './HamburgerMenu.vue'
 
 const showDrawer = ref(false)

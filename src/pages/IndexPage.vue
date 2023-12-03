@@ -1,26 +1,39 @@
 <template>
   <q-page padding>
     <div v-if="user">
-      Hi {{ name }}!
-
       <q-linear-progress stripe size="10px" :value="progress" />
 
-      <div class="row">
-        <template v-for="obj in trackers" :key="obj.id">
-          <q-card class="col-6 col-md-3 flex justify-center" style="" flat>
-            <q-card-section class="">
-              <Spinner v-model="obj.value.value" :max="obj.max.value" :label="obj.label" />
-            </q-card-section>
-          </q-card>
-        </template>
-      </div>
+      <template v-if="$q.screen.lt.sm">
+        <q-tabs v-model="activeTab" outside-arrows inline-label>
+          <q-tab v-for="obj in tracking" :key="obj.id" :label="obj.label"
+            :icon="obj.value.value >= obj.max.value ? 'check' : ''" :name="obj.id">
+          </q-tab>
+        </q-tabs>
+
+        <q-tab-panels v-model="activeTab" animated>
+          <q-tab-panel class="overflow-hidden" v-for="obj in tracking" :key="obj.id" :name="obj.id">
+            <Spinner v-model="obj.value.value" :max="obj.max.value" :spinner-props="{ size: '15rem' }" />
+          </q-tab-panel>
+        </q-tab-panels>
+      </template>
+
+      <template v-else>
+        <div class="row">
+          <template v-for="obj in trackers" :key="obj.id">
+            <q-card class="col-6 col-md-3 flex justify-center" style="" flat>
+              <q-card-section class="">
+                <Spinner v-model="obj.value.value" :max="obj.max.value" :label="obj.label" />
+              </q-card-section>
+            </q-card>
+          </template>
+        </div>
+      </template>
 
       <q-dialog v-model="showUpdateGoals" persistent>
         <SelectGoals :data="goals" @save="updateGoals" />
       </q-dialog>
 
       <q-btn @click="showUpdateGoals = true" color="secondary">Update Goals</q-btn>
-
     </div>
     <div v-else>
       <q-btn to="/login" color="accent">Login</q-btn>
@@ -36,13 +49,14 @@ import SelectGoals from 'src/components/SelectGoals.vue'
 const { user } = useAuthUser()
 
 const showUpdateGoals = ref(false)
+const activeTab = ref()
 
 const trackers = [
   {
     id: 1,
     label: 'SubhanAllah',
-    value: ref(30),
-    max: ref(100)
+    value: ref(0),
+    max: ref(0)
   },
   {
     id: 2,
@@ -82,13 +96,19 @@ const trackers = [
   }
 ]
 
+const tracking = computed(() => {
+  return trackers.filter(({ max }) => max.value > 0)
+})
+
+activeTab.value = tracking.value[0].id
+
 const goals = computed(() => {
   return trackers.map(({ id, label, max }) => {
     return {
       id,
       label,
       currGoal: unref(max),
-      newGoalMax: unref(max) + unref(max) * 0.5
+      newGoalMax: unref(max) + unref(max) * 0.5 || 33
     }
   })
 })
@@ -102,7 +122,9 @@ function updateGoals(data) {
 }
 
 const progress = computed(() => {
-  const curr = trackers.map(({ value, max }) => Math.min(value.value, max.value)).reduce((a, b) => a + b, 0)
+  const curr = trackers
+    .map(({ value, max }) => Math.min(value.value, max.value))
+    .reduce((a, b) => a + b, 0)
 
   const max = trackers.map(({ max }) => max.value).reduce((a, b) => a + b, 0)
   return curr / max

@@ -41,6 +41,20 @@ export default function useNavLinks() {
     }
   ]
 
+  const footerLinks = [
+
+    {
+      label: 'Dhikr',
+      link: '/',
+      icon: 'diamond'
+    },
+    {
+      label: 'Wird',
+      link: 'register',
+      icon: 'import_contacts'
+    }
+  ]
+
   const userLinksProcessed = computed(() => {
     return userLinks.filter(link => {
       return (user.value && link.isAuth) || (!user.value && !link.isAuth)
@@ -49,6 +63,7 @@ export default function useNavLinks() {
 
   return {
     links,
+    footerLinks,
     userLinks: userLinksProcessed
   }
 }
