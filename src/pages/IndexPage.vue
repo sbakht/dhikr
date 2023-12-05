@@ -1,20 +1,28 @@
 <template>
-  <q-page padding>
-    <div v-if="user">
-      <q-linear-progress stripe size="10px" :value="progress" />
+  <q-page class="column" padding>
+    <template v-if="user">
+
+      <div class="col-shrink">
+        <q-linear-progress class="col" stripe size="10px" :value="progress" />
+      </div>
 
       <template v-if="$q.screen.lt.sm">
-        <q-tabs v-model="activeTab" outside-arrows inline-label>
-          <q-tab v-for="obj in tracking" :key="obj.id" :label="obj.label"
-            :icon="obj.value.value >= obj.max.value ? 'check' : ''" :name="obj.id">
-          </q-tab>
-        </q-tabs>
+        <div class="col-shrink full-width">
+          <q-tabs v-model="activeTab" outside-arrows inline-label>
+            <q-tab v-for="obj in tracking" :key="obj.id" :label="obj.label"
+              v-bind="obj.value.value >= obj.max.value ? { icon: 'check' } : {}" :name="obj.id">
+            </q-tab>
+          </q-tabs>
+        </div>
 
-        <q-tab-panels v-model="activeTab" animated>
-          <q-tab-panel class="overflow-hidden" v-for="obj in tracking" :key="obj.id" :name="obj.id">
-            <Spinner v-model="obj.value.value" :max="obj.max.value" :spinner-props="{ size: '15rem' }" />
-          </q-tab-panel>
-        </q-tab-panels>
+        <div class="col column flex-center">
+          <q-tab-panels class="row" v-model="activeTab" animated>
+            <q-tab-panel class="overflow-hidden" v-for="obj in tracking" :key="obj.id" :name="obj.id">
+              <Spinner v-model="obj.value.value" :max="obj.max.value"
+                :spinner-props="{ size: '25rem', color: 'secondary', thickness: .04, class: '' }" />
+            </q-tab-panel>
+          </q-tab-panels>
+        </div>
       </template>
 
       <template v-else>
@@ -33,8 +41,8 @@
         <SelectGoals :data="goals" @save="updateGoals" />
       </q-dialog>
 
-      <q-btn @click="showUpdateGoals = true" color="secondary">Update Goals</q-btn>
-    </div>
+      <!-- <q-btn @click="showUpdateGoals = true" color="secondary">Update Goals</q-btn> -->
+    </template>
     <div v-else>
       <q-btn to="/login" color="accent">Login</q-btn>
     </div>
@@ -42,14 +50,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, unref } from 'vue'
+import { computed, ref, unref, watch } from 'vue'
 import useAuthUser from '../composables/useAuthUser'
 import Spinner from 'src/components/Spinner.vue'
 import SelectGoals from 'src/components/SelectGoals.vue'
+import { useCountStorage } from 'src/composables/useCountStorage'
 const { user } = useAuthUser()
 
 const showUpdateGoals = ref(false)
 const activeTab = ref()
+
+const testComputed = useCountStorage(2)
 
 const trackers = [
   {
@@ -61,37 +72,37 @@ const trackers = [
   {
     id: 2,
     label: 'Alhamdulillah',
-    value: ref(30),
+    value: useCountStorage(2),
     max: ref(100)
   },
   {
     id: 3,
     label: 'La ilaaha il-Allah ',
-    value: ref(30),
+    value: useCountStorage(3, { disabled: true, init: 90 }),
     max: ref(100)
   },
   {
     id: 4,
     label: 'Allahu Akbar',
-    value: ref(70),
+    value: useCountStorage(4, { disabled: true, init: 70 }),
     max: ref(100)
   },
   {
     id: 5,
     label: 'SubhanAllahi wa bihamdihi',
-    value: ref(30),
+    value: useCountStorage(5, { disabled: true, init: 30 }),
     max: ref(100)
   },
   {
     id: 6,
     label: 'La hawla wala quwata illah bilah',
-    value: ref(30),
+    value: useCountStorage(6, { disabled: true, init: 30 }),
     max: ref(100)
   },
   {
     id: 7,
     label: "Salat 'ala an- Nabi",
-    value: ref(30),
+    value: useCountStorage(7, { disabled: true, init: 30 }),
     max: ref(100)
   }
 ]
