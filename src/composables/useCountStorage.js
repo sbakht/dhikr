@@ -16,7 +16,7 @@ export function useCountStorage(id, { disabled = false, init = 0 } = {}) {
 
   const iStorageEnabled = !(DISABLED || disabled)
 
-  const data = iStorageEnabled ? useStorage(key, defaultVal) : ref(defaultVal)
+  const data = iStorageEnabled ? useStorage(key, defaultVal) : useStorage(key, defaultVal, sessionStorage)
 
   const count = computed({
     get() {
@@ -35,9 +35,9 @@ export function useCountStorage(id, { disabled = false, init = 0 } = {}) {
         data.value.push({ date: today(), count })
         return
       }
-      if (iStorageEnabled) {
-        console.log('todayData', todayData)
-      }
+      // if (iStorageEnabled) {
+      console.log('todayData', todayData)
+      // }
       data.value = data.value.map(
         (item) => (item.date === today() ? { ...item, count } : item)
       )

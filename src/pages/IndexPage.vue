@@ -66,7 +66,7 @@ const trackers = [
   {
     id: 1,
     label: 'SubhanAllah',
-    value: ref(0),
+    value: useCountStorage(1),
     max: ref(0)
   },
   {
@@ -78,31 +78,31 @@ const trackers = [
   {
     id: 3,
     label: 'La ilaaha il-Allah ',
-    value: useCountStorage(3, { disabled: true, init: 90 }),
+    value: useCountStorage(3, { init: 90 }),
     max: ref(100)
   },
   {
     id: 4,
     label: 'Allahu Akbar',
-    value: useCountStorage(4, { disabled: true, init: 70 }),
+    value: useCountStorage(4, { init: 70 }),
     max: ref(100)
   },
   {
     id: 5,
     label: 'SubhanAllahi wa bihamdihi',
-    value: useCountStorage(5, { disabled: true, init: 30 }),
+    value: useCountStorage(5, { init: 30 }),
     max: ref(100)
   },
   {
     id: 6,
     label: 'La hawla wala quwata illah bilah',
-    value: useCountStorage(6, { disabled: true, init: 30 }),
+    value: useCountStorage(6, { init: 30 }),
     max: ref(100)
   },
   {
     id: 7,
     label: "Salat 'ala an- Nabi",
-    value: useCountStorage(7, { disabled: true, init: 30 }),
+    value: useCountStorage(7, { init: 30 }),
     max: ref(100)
   }
 ]

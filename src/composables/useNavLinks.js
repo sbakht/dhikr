@@ -50,7 +50,7 @@ export default function useNavLinks() {
     },
     {
       label: 'Wird',
-      link: 'register',
+      link: 'wird',
       icon: 'import_contacts'
     }
   ]
